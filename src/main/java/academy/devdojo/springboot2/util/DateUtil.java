@@ -1,5 +1,6 @@
 package academy.devdojo.springboot2.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

@@ -7,13 +7,10 @@ import academy.devdojo.springboot2.repository.AnimeRepository;
 import academy.devdojo.springboot2.requests.AnimePostRequestBody;
 import academy.devdojo.springboot2.requests.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +33,10 @@ public class AnimeService {
         return animeRepository.findById(id).orElseThrow(() -> new BadRequestException("Anime not Found."));
 
     }
-
+    //@Transactional = RowBack, (rollbackFor = Exception.class) PARA da rollback em error Checket
+    @Transactional(rollbackFor = Exception.class)
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-
-        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
+        return  animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
     public void delete(long id) {

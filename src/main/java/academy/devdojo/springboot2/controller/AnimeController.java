@@ -28,13 +28,14 @@ public class AnimeController {
     // Reposanvel pelo endpoint
 
     // http://localhost:8080/anime/list/
-    /*@GetMapping
-    public ResponseEntity<List<Anime>> list() {
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Anime>> listAll() {
         log.info(dateUtil.formatLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(animeService.listAll(), HttpStatus.OK);
-    } */
+        return ResponseEntity.ok(animeService.listAllNonPageable());
+    }
 
     // Pagination
+
     @GetMapping
     public ResponseEntity<Page<Anime>> list(Pageable pageable) {
         log.info(dateUtil.formatLocalDateTimeToDataBaseStyle(LocalDateTime.now()));

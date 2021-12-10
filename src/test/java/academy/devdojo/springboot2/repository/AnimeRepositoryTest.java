@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+import java.util.Optional;
+
 @DataJpaTest
 @DisplayName("Tests for Anime Repository")
 @Log4j2
@@ -43,6 +46,45 @@ class AnimeRepositoryTest {
 
         Assertions.assertThat(animeUpdated.getName()).isEqualTo(animeSaved.getName());
 
+    }
+
+
+    @Test
+    @DisplayName("Delete removes anime when Successful")
+    void delete_RemovesAnime_WhenSuccessful() {
+        Anime animeTobeSaved = createAnime();
+
+        Anime animeSaved = this.animeRepository.save(animeTobeSaved);
+
+        this.animeRepository.delete(animeSaved);
+
+        Optional<Anime> animeOptional = this.animeRepository.findById(animeSaved.getId());
+
+        Assertions.assertThat(animeOptional).isEmpty();
+
+    }
+
+    @Test
+    @DisplayName("Find By Name returns list of anime when Successful")
+    void findByName_ReturnsListOfAnime_WhenSuccessful() {
+        Anime animetoBeSaved = createAnime();
+
+        Anime animeSaved = animeRepository.save(animetoBeSaved);
+
+        String name = animeSaved.getName();
+
+        List<Anime> animes = this.animeRepository.findByName(name);
+
+        Assertions.assertThat(animes).isNotEmpty();
+        Assertions.assertThat(animes).contains(animeSaved);
+    }
+
+    @Test
+    @DisplayName("Find By Name returns empty list when no anime is found")
+    void findByName_ReturnsEmptyList_WhenAnimeIsNotFound() {
+        List<Anime> animes = this.animeRepository.findByName("xaxa");
+
+        Assertions.assertThat(animes).isEmpty();
     }
 
     private Anime createAnime() {

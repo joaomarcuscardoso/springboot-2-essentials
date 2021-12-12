@@ -1,10 +1,12 @@
 server:
   error:
-    include-stacktrace: on_param
+    include-stacktrace: always
 
 
  #06/12/2021 Add Database Dependecy
 spring:
+  application:
+    name: springboot2-essentials
   datasource:
     url: jdbc:mysql://localhost:3306/anime?&createDatabaseIfNotExist=true
     username: root
@@ -12,18 +14,29 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: false
+#    show-sql: true
 
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 management:
   endpoints:
     web:
       exposure:
         include: info, health, metrics, prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
 
 
 info:

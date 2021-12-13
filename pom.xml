@@ -12,13 +12,18 @@
 	</parent>
 	<groupId>academy.devdojo</groupId>
 	<artifactId>springboot2-essentials</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>springboot2-essentials</name>
 	<description>Curso de Spring Boot DevDojo</description>
 	<properties>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<springdoc-openapi-ui.version>1.5.13</springdoc-openapi-ui.version>
+		<docker.distroless.image>gcr.io/distroless/java:11</docker.distroless.image>
+		<docker.repo.url>joao1233321</docker.repo.url>
+		<docker.repo.project>springboot2-essentials</docker.repo.project>
+		<docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
+		<jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<!--Metrics Processing-->
@@ -127,6 +132,27 @@
 
 	<build>
 		<plugins>
+			<!-- Image com jib-->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<form>
+						<image>${docker.distroless.image}</image>
+					</form>
+					<to>
+						<image>${docker.image.name}</image>
+						<tags>
+							<tag>${project.version}</tag>
+						</tags>
+					</to>
+					<container>
+						<mainClass>academy.devdojo.springboot2.Springboot2EssentialsApplication</mainClass>
+					</container>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
